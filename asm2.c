@@ -52,9 +52,9 @@ int main()
         printf("5: Chức năng đổi tiền \n");
         printf("6: Chức năng đổi tiền \n");
         printf("7: Chương trình vay tiền mua xe \n");
-        printf("8: Chức năng đang được phát triển \n");
-        printf("9: Chức năng đang được phát triển \n");
-        printf("10: Chức năng đang được phát triển \n");
+        printf("8: Sắp xếp thông tin sinh viên \n");
+        printf("9: Game FPOLY-LOTT \n");
+        printf("10: Tính toán phân số \n");
         printf("0: Thoát trương trình\n");
         printf("Chọn chức năng bạn muốn thực hiện : ");
         if (scanf("%d", &choice) != 1) {
@@ -209,9 +209,9 @@ void cau3()
     printf("Nhập giờ kết thúc : ");
     scanf("%f", &ketThuc);
     thoiGianHat = ketThuc - batDau;
-    if (batDau < 12 || ketThuc > 23 || batDau >= ketThuc || ketThuc < thoiGianHat)
+    if (batDau < 12 || ketThuc > 23 || batDau >= ketThuc || thoiGianHat <= 0)
     {
-        printf("Giờ không hợp lệ");
+        printf("Giờ không hợp lệ! Vui lòng nhập lại! (Giờ bắt đầu >= 12, giờ kết thúc <= 23)\n");
         return;
     }
     else
@@ -438,13 +438,178 @@ void cau7()
 }
 void cau8()
 {
-    // Chức năng đang được phát triển
+    int n;
+    char hoten[50][50];
+    float diem[50];
+    int i, j;
+    char tempTen[50];
+    float tempDiem;
+
+    printf("Nhap so luong sinh vien: ");
+    scanf("%d", &n);
+    getchar(); // xóa bộ nhớ đệm
+
+    // Nhập thông tin
+    for (i = 0; i < n; i++)
+    {
+        printf("\nSinh vien thu %d\n", i + 1);
+        printf("Nhap ho ten: ");
+        gets(hoten[i]);
+        do
+        {
+            printf("Nhap diem (0 - 10): ");
+            scanf("%f", &diem[i]);
+
+            if (diem[i] < 0 || diem[i] > 10)
+            {
+                printf("Diem khong hop le! Vui long nhap lai.\n");
+            }
+        } while (diem[i] < 0 || diem[i] > 10);
+
+        getchar();
+    }
+
+    // Sắp xếp theo điểm giảm dần
+    for (i = 0; i < n - 1; i++)
+    {
+        for (j = i + 1; j < n; j++)
+        {
+            if (diem[i] < diem[j])
+            {
+                // Đổi điểm
+                tempDiem = diem[i];
+                diem[i] = diem[j];
+                diem[j] = tempDiem;
+                // Đổi tên
+                strcpy(tempTen, hoten[i]);
+                strcpy(hoten[i], hoten[j]);
+                strcpy(hoten[j], tempTen);
+            }
+        }
+    }
+
+    // Xuất kết quả
+    printf("\nDANH SACH SINH VIEN SAU KHI SAP XEP\n");
+    for (i = 0; i < n; i++)
+    {
+        printf("\nHo ten: %s", hoten[i]);
+        printf("\nDiem: %.2f", diem[i]);
+        printf("\nHoc luc: ");
+
+        if (diem[i] >= 9)
+            printf("Xuat sac");
+        else if (diem[i] >= 8)
+            printf("Gioi");
+        else if (diem[i] >= 6.5)
+            printf("Kha");
+        else if (diem[i] >= 5)
+            printf("Trung binh");
+        else
+            printf("Yeu");
+    }
 }
+
 void cau9()
 {
-    // Chức năng đang được phát triển
+    int so1, so2;
+    int rand1, rand2;
+    int trung = 0;
+
+    // Nhập 2 số từ bàn phím
+    printf("Nhap so thu nhat (1-15): ");
+    scanf("%d", &so1);
+
+    printf("Nhap so thu hai (1-15): ");
+    scanf("%d", &so2);
+
+    // Sinh số ngẫu nhiên
+    srand(time(NULL));
+    rand1 = rand() % 15 + 1;
+    do
+    {
+        rand2 = rand() % 15 + 1;
+    } while (rand2 == rand1);
+    printf("\nSo he thong sinh ra: %d va %d\n", rand1, rand2);
+    while (so1 < 1 || so1 > 15 || so2 < 1 || so2 > 15)
+    {
+        printf("Vui long nhap lai so trong khoang 1-15\n");
+
+        if (so1 < 1 || so1 > 15)
+        {
+            printf("Nhap so thu nhat (1-15): ");
+            scanf("%d", &so1);
+        }
+
+        if (so2 < 1 || so2 > 15)
+        {
+            printf("Nhap so thu hai (1-15): ");
+            scanf("%d", &so2);
+        }
+    }
+
+    // Kiểm tra trúng
+    if (so1 == rand1 || so1 == rand2)
+        trung++;
+
+    if (so2 == rand1 || so2 == rand2)
+        trung++;
+
+    // Hiển thị kết quả
+    if (trung == 0)
+        printf("Chuc ban may man lan sau!");
+    else if (trung == 1)
+        printf("Chuc mung ban da trung giai nhi!");
+    else
+        printf("Chuc mung ban da trung giai nhat!");
 }
 void cau10()
 {
-    // Chức năng đang được phát triển
+    int a, b, c, d;
+
+    printf("Nhap tu va mau phan so thu nhat: ");
+    scanf("%d %d", &a, &b);
+
+    printf("Nhap tu va mau phan so thu hai: ");
+    scanf("%d %d", &c, &d);
+    while (b == 0 || d == 0)
+    {
+        printf("Mau so phai khac 0!\n");
+        printf("Nhap mau phan so thu nhat: ");
+        scanf("%d", &b);
+        printf("Nhap mau phan so thu hai: ");
+        scanf("%d", &d);
+    }
+
+    int tu, mau, ucln;
+
+    // TỔNG
+    tu = a * d + b * c;
+    mau = b * d;
+    ucln = UCLN(tu, mau);
+    printf("Tong: %d/%d\n", tu / ucln, mau / ucln);
+
+    // HIỆU
+    tu = a * d - b * c;
+    mau = b * d;
+    ucln = UCLN(tu, mau);
+    printf("Hieu: %d/%d\n", tu / ucln, mau / ucln);
+
+    // TÍCH
+    tu = a * c;
+    mau = b * d;
+    ucln = UCLN(tu, mau);
+    printf("Tich: %d/%d\n", tu / ucln, mau / ucln);
+
+    // THƯƠNG
+    if (c == 0)
+    {
+        printf("Thuong: Khong the chia cho 0\n");
+    }
+    else
+    {
+        tu = a * d;
+        mau = b * c;
+        ucln = UCLN(tu, mau);
+        printf("Thuong: %d/%d\n", tu / ucln, mau / ucln);
+    }
 }
